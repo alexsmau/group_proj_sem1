@@ -10,12 +10,16 @@
 clear all
 
 % Connect to robot
-Robot_IP = '0.0.0.0';
-Socket_conn = tcpip(Robot_IP,30000,'NetworkRole','server');
+Robot_IP = '192.168.0.101';
+Socket_conn = tcpip(Robot_IP,30003,'NetworkRole','server');
 fclose(Socket_conn);
 disp('Press Play on Robot...')
 fopen(Socket_conn);
 disp('Connected!');
+
+%% Read actual joint positions
+
+Joint_Positions = read_actual_joint_positions(Socket_conn)
 
 %% Read robot pose
 Robot_Pose = readrobotpose(Socket_conn)
