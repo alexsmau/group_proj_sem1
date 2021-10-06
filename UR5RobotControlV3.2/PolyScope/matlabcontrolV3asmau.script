@@ -62,13 +62,13 @@ def matlabcontrolV3():
   def StoreForwardKinematics():
     pose_1 = get_forward_kin()
     global pointer = 0
-    #varmsg("pointer"pointer)
-    textmsg("pointer ",pointer)
+    varmsg("pointer", pointer)
+    #textmsg("pointer ",pointer)
     while (pointer < receive_data[0]):
     Move_To_Pos[pointer] = pose_1[pointer]
     global pointer = pointer + 1
-    #varmsg("pointer"pointer)
-    textmsg("pointer ",pointer)
+    varmsg("pointer", pointer)
+    #textmsg("pointer ",pointer)
     end
   end
   
@@ -87,16 +87,16 @@ def matlabcontrolV3():
     socket_send_string("1")
     global pointer = 0
     varmsg("pointer", pointer)
-    #txtmsg("pointer", pointer)
+    #varmsg("pointer", pointer)
     while (pointer < receive_data[0]):
     Move_To_Pos[pointer] = receive_data[pointer + 1]
     global pointer = pointer + 1
     #varmsg("pointer"pointer)
-    txtmsg("pointer ",pointer)
+    varmsg("pointer ",pointer)
     end
     global task = [0, 0]
     #varmsg("task"task)
-    txtmsg("task",task)
+    varmsg("task",task)
     end
   end
   
@@ -122,33 +122,33 @@ def matlabcontrolV3():
   set_gravity([0.0, 0.0, 9.82])
   flag_N = 1
   #varmsg("flag_N"flag_N)
-  txtmsg("flag_N",flag_N)
+  varmsg("flag_N",flag_N)
   i_var_1 = 1
   #varmsg("i_var_1"i_var_1)
-  txtmsg("i_var_1", i_var_1)
+  varmsg("i_var_1", i_var_1)
   MTool_pos = p[0, 0, 0, 0, 0, 0]
   #varmsg("MTool_pos"MTool_pos)
-  txtmsg("MTool_pos", MTool_pos)
+  varmsg("MTool_pos", MTool_pos)
   Base = p[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
   #varmsg("Base"Base)
-  txtmsg("Base", Base)
+  varmsg("Base", Base)
   Tool = get_forward_kin()
   #varmsg("Tool"Tool)
-  txtmsg("Tool", Tool)
+  varmsg("Tool", Tool)
   global receive_data = [6, 0, 0, 0, 0, 0, 0]
   #varmsg("receive_data"receive_data)
-  txtmsg("receive_data", receive_data)
+  varmsg("receive_data", receive_data)
   global Move_To_Pos = p[0, 0, 0, 0, 0, 0]
   #varmsg("Move_To_Pos"Move_To_Pos)
-  txtmsg("Move_To_Pos", Move_To_Pos)
+  varmsg("Move_To_Pos", Move_To_Pos)
   StoreForwardKinematics()
   socket_open("192.168.1.100" ,30003)
   global task = [0, 0]
   #varmsg("task"task)
-  txtmsg("task", task)
+  varmsg("task", task)
   global coop = 0
   #varmsg("coop"coop)
-  txtmsg("coop", coop) 
+  varmsg("coop", coop) 
   thread Thread_1():
     while True:
       if (coop == 1):
@@ -181,25 +181,25 @@ def matlabcontrolV3():
   SendForwardKinematics()
   global task = [0, 0]
   #varmsg("task"task)
-  txtmsg("task", task)
+  varmsg("task", task)
   else:
   if (task[1] == 3):
   global coop = 1
   #varmsg("coop"coop)
-  txtmsg("coop", coop)
+  varmsg("coop", coop)
   socket_send_string("1")
   global task = [0, 0]
   #varmsg("task"task)
-  txtmsg("task", task)
+  varmsg("task", task)
   else:
   if (task[1] == 4):
   global coop = 0
   #varmsg("coop"coop)
-  txtmsg("coop", coop)
+  varmsg("coop", coop)
   socket_send_string("1")
   global task = [0, 0]
   #varmsg("task"task)
-  txtmsg("task", task)
+  varmsg("task", task)
   else:
   if (task[1] == 1):
   ReadAndStorePoseFromSocket()
