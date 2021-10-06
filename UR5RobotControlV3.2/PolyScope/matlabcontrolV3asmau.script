@@ -177,11 +177,13 @@ def matlabcontrolV3():
   threadId_Thread_1 = run Thread_1() 
   while (True):
     task = socket_read_ascii_float(1)
+    textmsg("task", task)
     if (task[1] == 2):
       SendForwardKinematics()
       global task = [0, 0]
       #varmsg("task"task)
       varmsg("task", task)
+      textmsg("task", task)
     else:
       if (task[1] == 3):
         global coop = 1

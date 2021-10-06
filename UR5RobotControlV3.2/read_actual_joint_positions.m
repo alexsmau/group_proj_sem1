@@ -4,7 +4,7 @@ function P = read_actual_joint_positions(t)
 if t.BytesAvailable>0
     fscanf(t,'%c',t.BytesAvailable);
 end
-fprintf(t,'(6)'); % task = 2 : reading task
+fprintf(t,'(7)'); % task = 2 : reading task
 while t.BytesAvailable==0
 end
 rec = fscanf(t,'%c',t.BytesAvailable);
