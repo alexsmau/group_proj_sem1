@@ -86,13 +86,13 @@ def matlabcontrolV3():
     else:
     socket_send_string("1")
     global pointer = 0
-    #varmsg("pointer"pointer)
-    txtmsg("pointer", pointer)
+    varmsg("pointer", pointer)
+    #txtmsg("pointer", pointer)
     while (pointer < receive_data[0]):
     Move_To_Pos[pointer] = receive_data[pointer + 1]
     global pointer = pointer + 1
     #varmsg("pointer"pointer)
-    textmsg("pointer ",pointer)
+    txtmsg("pointer ",pointer)
     end
     global task = [0, 0]
     #varmsg("task"task)
@@ -119,7 +119,7 @@ def matlabcontrolV3():
   set_tool_voltage(0)
   set_runstate_outputs()
   set_payload(0.0)
-  set_gravity(0.00.09.82)
+  set_gravity([0.0, 0.0, 9.82])
   flag_N = 1
   #varmsg("flag_N"flag_N)
   txtmsg("flag_N",flag_N)
@@ -148,30 +148,31 @@ def matlabcontrolV3():
   txtmsg("task", task)
   global coop = 0
   #varmsg("coop"coop)
-  txtmsg("coop", coop)
-  threadThread_1()
-  while True:
-  if (coop == 1):
-  while (coop == 1):
-  threadForce_properties_calculation_thread_31()
-  while (True):
-  force_mode(p0.00.00.00.00.00.01111110.00.00.00.00.00.020.150.150.151.04719755119659761.04719755119659761.0471975511965976)
-  sync()
-  end
-  end
-  global thread_handler_31 = run Force_properties_calculation_thread_31()
-  sleep(0.010)
-  kill thread_handler_31
-  end_force_mode()
-  end
-  global coop = 0
-  #varmsg("coop"coop)
-  txtmsg("coop", coop)
-  StoreForwardKinematics()
-  else:
-  sleep(0.010)
-  end
-  end
+  txtmsg("coop", coop) 
+  thread Thread_1():
+    while True:
+      if (coop == 1):
+        while (coop == 1):
+          thread Force_properties_calculation_thread_31():
+            while (True):
+              force_mode(p[0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [1, 1, 1, 1, 1, 1], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 2, [0.15, 0.15, 0.15, 1.0471975511965976, 1.0471975511965976, 1.0471975511965976])
+              sync()
+            end
+          end
+          global thread_handler_31 = run Force_properties_calculation_thread_31()
+          sleep(0.01)
+          kill thread_handler_31
+          end_force_mode()
+        end
+        global coop = 0
+        #varmsg("coop", coop)
+        varmsg("coop", coop)
+        StoreForwardKinematics()
+      else:
+        movel(Move_To_Pos, a = 0.2, v = 0.2, r = 0)
+        sleep(0.01)
+      end
+    end
   end
   threadId_Thread_1 = run Thread_1()
   while (True):
