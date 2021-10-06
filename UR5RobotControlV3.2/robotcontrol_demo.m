@@ -10,8 +10,8 @@
 clear all
 
 % Connect to robot
-Robot_IP = '192.168.0.101';
-Socket_conn = tcpip(Robot_IP,30003,'NetworkRole','server');
+Robot_IP = '192.168.0.103';
+Socket_conn = tcpip(Robot_IP, 30006,'NetworkRole','server');
 fclose(Socket_conn);
 disp('Press Play on Robot...')
 fopen(Socket_conn);
