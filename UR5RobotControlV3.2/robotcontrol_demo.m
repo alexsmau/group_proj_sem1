@@ -28,7 +28,7 @@ Orientation = Robot_Pose(4:6);
 
 %% %%%%%%%%%%% Example 1: translation
 % Translate robot
-Translation = Translation - 20; % 20 mm in all axes
+%Translation = Translation - 20; % 20 mm in all axes
 moverobot(Socket_conn,Translation,Orientation);
 
 %% %%%%%%%%%%%% Example 2: Rotation
