@@ -88,12 +88,14 @@ def matlabcontrolV3():
   # Subprogram SendForwardKinematics
   def SendForwardKinematics():
     pose_1 = get_forward_kin()
+    textmsg("send forward kin to socket ", pose_1)
     socket_send_string(pose_1)
   end
 
   # Subprogram ReadAndStorePoseFromSocket
   def ReadAndStorePoseFromSocket():
     receive_data = socket_read_ascii_float(6)
+    textmsg("Set pose:", receive_data)
     if (receive_data[0] != 6):
       socket_send_string("0")
     else:
@@ -119,12 +121,14 @@ def matlabcontrolV3():
   # Subprogram SendActualJointPositionToSocket
   def SendActualJointPositionToSocket():
     joint_positions = get_actual_joint_positions()
+    textmsg("send actual pos to socket ", joint_positions)
     socket_send_string(joint_positions)
   end
 
   # Subprogram to read and store joint prostions form socket 
   def ReadAndStoreJointPositionsFormSocket():
     receive_data = socket_read_ascii_float(6)
+    textmsg("Set joint pos:", receive_data)
     if (receive_data[0] != 6):
       socket_send_string("0")
     else:
@@ -143,7 +147,6 @@ def matlabcontrolV3():
       move_type = 1
 
       global task = [0, 0]
-      #varmsg("task"task)
       varmsg("task", task)
     end
   end
@@ -223,8 +226,10 @@ def matlabcontrolV3():
       else:
         # Decide what kind of movement to make.
         if (move_type == 0):
+          #textmsg("movel: ", Move_To_Joint_Pos)
           movel(Move_To_Pos, a = 0.2, v = 0.2, r = 0)
         else:
+          #textmsg("movej: ", Move_To_Joint_Pos)
           movej(Move_To_Joint_Pos, a=1.4, v=1.05, t=0, r=0)
         end
         sleep(0.01)
@@ -267,7 +272,7 @@ def matlabcontrolV3():
     
     elif (task[1] == 7):
       SendActualJointPositionToSocket()
-    else (task[1] == 8):
+    elif (task[1] == 8):
       ReadAndStoreJointPositionsFormSocket()
     else:
       #Do nothing, 

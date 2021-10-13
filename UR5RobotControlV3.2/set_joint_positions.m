@@ -1,13 +1,13 @@
 % Goal_Pose should be in mm and Orientation the rotation vector
-function P_new = set_joint_positions(t,Goal_Pose,Orientation)
-if nargin == 1
+function P_new = set_joint_positions(t, P)
+if nargin ~= 2
     error('error; not enough input arguments')
-elseif nargin == 2
-    P = Goal_Pose;
-elseif nargin == 3
-    P = [Goal_Pose,Orientation];
+% elseif nargin == 2
+%     P = Goal_Pose;
+% elseif nargin == 3
+%     P = [Goal_Pose,Orientation];
 end
-P(1:3) = P(1:3) * 0.001; % Converting to meter
+%P(1:3) = P(1:3) * 0.001; % Converting to meter
 P_char = ['(',num2str(P(1)),',',...
     num2str(P(2)),',',...
     num2str(P(3)),',',...
@@ -17,7 +17,7 @@ P_char = ['(',num2str(P(1)),',',...
     ')'];
 success = '0';
 while strcmp(success,'0')
-    fprintf(t,'(1)'); % task = 1 : moving task
+    fprintf(t,'(8)'); % task = 1 : moving task
     pause(0.01);% Tune this to meet your system
     fprintf(t,P_char);
     while t.BytesAvailable==0
@@ -29,4 +29,4 @@ if ~strcmp(success,'1')
     error('error sending robot pose')
 end
 %pause(0.5)
-P_new = readrobotpose(t);
+%P_new = readrobotpose(t);

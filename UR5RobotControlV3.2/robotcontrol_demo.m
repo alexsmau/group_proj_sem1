@@ -21,6 +21,10 @@ disp('Connected!');
 
 Joint_Positions = read_actual_joint_positions(Socket_conn)
 
+%% Set joint positions
+ Joint_Positions(3) = Joint_Positions(3) - 0.17
+set_joint_positions(Socket_conn, Joint_Positions)
+
 %% Read robot pose
 Robot_Pose = readrobotpose(Socket_conn)
 Translation = Robot_Pose(1:3); % in mm

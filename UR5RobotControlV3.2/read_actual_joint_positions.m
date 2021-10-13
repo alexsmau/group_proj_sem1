@@ -8,11 +8,12 @@ fprintf(t,'(7)'); % task = 2 : reading task
 while t.BytesAvailable==0
 end
 rec = fscanf(t,'%c',t.BytesAvailable);
-if ~strcmp(rec(1),'p') || ~strcmp(rec(end),']')
+rec
+if ~strcmp(rec(1),'[') || ~strcmp(rec(end),']')
     error('robotpose read error')
 end
 rec(end) = ',';
-Curr_c = 2;
+Curr_c = 1;
 for i = 1 : 6
     C = [];
     Done = 0;
@@ -26,10 +27,10 @@ for i = 1 : 6
     end
     P(i) = str2double(C);   
 end
-% for i = 1 : length(P)
-%     if isnan(P(i))
-%         error('robotpose read error (Nan)')
-%     end
-% end
+for i = 1 : length(P)
+    if isnan(P(i))
+        error('robotpose read error (Nan)')
+    end
+end
 % P(1:3) = P(1:3)*1000; % converting to mm
 end
