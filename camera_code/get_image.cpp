@@ -15,7 +15,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/core/utility.hpp>
 #include <opencv2/highgui.hpp>
-
+#include <opencv2/calib3d.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                     These parameters are reconfigurable                                        //
@@ -43,7 +43,7 @@ static std::string get_sensor_name(const rs2::sensor& sensor)
         return "Unknown Sensor";
 }
 
-int main()
+int mainz()
 {
     rs2::context ctx;
     rs2::device_list dev_list = ctx.query_devices();
@@ -95,8 +95,8 @@ int main()
         imshow("infrared_stereo_pair", dst);
         
         waitKey(0);
-        imwrite("left_img.png", dMat_left);
-        imwrite("right_img.png", dMat_right);
+        //imwrite("left_img.png", dMat_left);
+        //imwrite("right_img.png", dMat_right);
     }
 
     return EXIT_SUCCESS;
