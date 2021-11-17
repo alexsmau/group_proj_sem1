@@ -33,29 +33,23 @@
 #include <librealsense2/rs.hpp>
 
 using namespace cv;
+
+static std::string get_sensor_name(const rs2::sensor& sensor)
+{
+    // Sensors support additional information, such as a human readable name
+    if (sensor.supports(RS2_CAMERA_INFO_NAME))
+        return sensor.get_info(RS2_CAMERA_INFO_NAME);
+    else
+        return "Unknown Sensor";
+}
+
 int main()
 {
-#if 0
-    rs2::pipeline p;
-    rs2::config cfg;
-    //cfg.enable_stream(RS2_STREAM_INFRARED, 1, 1280, 720, RS2_FORMAT_Y8, 30);
-    cfg.enable_stream(STREAM, STREAM_INDEX_LEFT, WIDTH, HEIGHT, FORMAT, FPS);
-    //cfg.enable_stream(RS2_STREAM_INFRARED, 2, 1280, 720, RS2_FORMAT_Y8, 30);
-    //cfg.enable_stream(RS2_STREAM_COLOR, 1920, 1080, RS2_FORMAT_BGR8, 30);
-    p.start(cfg);
-    rs2::frameset frames = p.wait_for_frames();
-
-    auto ir_frame_left = frames.get_infrared_frame(1);
-    auto ir_frame_right = frames.get_infrared_frame(2);
-    auto depth = frames.get_depth_frame();
-    auto colored_frame = frames.get_color_frame();
-    printf("worked\n");
-#else
     rs2::context ctx;
-
     rs2::device_list dev_list = ctx.query_devices();
 
     printf("There are %d devices \n", dev_list.size());
+    
     // Capture serial numbers before opening streaming
     std::vector<std::string> serials;
     serials.clear();
@@ -63,25 +57,32 @@ int main()
     {
         printf("Device serial nr is %s \n", dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
         serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+
+        // Given a device, we can query its sensors using:
+        std::vector<rs2::sensor> sensors = dev.query_sensors();
+
+        printf("Device consists of %d ensors:\n", (int)sensors.size());
+
+        /* Disable the IR sensor. We do not want the dotted pattern. */
+        rs2::sensor stereo_sensor = sensors[0];
+        stereo_sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 0.f);
     }
 
     /* For now we will only use 1 camera so just use the first serial. */
     std::string cam1_serial = serials.back();
 
-    //rs2::pipeline pipe1(ctx);
+    rs2::pipeline pipe1(ctx);
     rs2::config cfg1;
     cfg1.enable_stream(STREAM, STREAM_INDEX_LEFT,  WIDTH, HEIGHT, FORMAT, FPS);
     cfg1.enable_stream(STREAM, STREAM_INDEX_RIGHT, WIDTH, HEIGHT, FORMAT, FPS);
     cfg1.enable_device(cam1_serial);
-    printf("foo 1\n");
-    rs2::pipeline pipe1;
+    
     pipe1.start(cfg1);
-    printf("foo 2\n");
+
     while (1)
     {
-        printf("foo\n");
         rs2::frameset frames = pipe1.wait_for_frames();
-        printf("There are %d frames found\n", frames.size());
+        printf("There are %d frames found\n", (int)frames.size());
         rs2::video_frame left_frame = frames.get_infrared_frame(STREAM_INDEX_LEFT);
         rs2::video_frame right_frame = frames.get_infrared_frame(STREAM_INDEX_RIGHT);
 
@@ -94,8 +95,9 @@ int main()
         imshow("infrared_stereo_pair", dst);
         
         waitKey(0);
-        imwrite("nightmare_fuel.jpeg", dst);
+        imwrite("left_img.png", dMat_left);
+        imwrite("right_img.png", dMat_right);
     }
-#endif
+
     return EXIT_SUCCESS;
 }
