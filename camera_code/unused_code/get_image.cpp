@@ -95,8 +95,8 @@ int mainz()
         imshow("infrared_stereo_pair", dst);
         
         waitKey(0);
-        //imwrite("left_img.png", dMat_left);
-        //imwrite("right_img.png", dMat_right);
+        imwrite("left_img3.png", dMat_left);
+        imwrite("right_img3.png", dMat_right);
     }
 
     return EXIT_SUCCESS;

@@ -11,7 +11,7 @@
 
 using namespace cv;
 
-int main()
+int mainzs()
 {
 	Mat left_img = imread("pattern_left.png", IMREAD_GRAYSCALE);
 	if (left_img.empty())
