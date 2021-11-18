@@ -11,7 +11,23 @@
 
 #include <opencv2/core.hpp>
 
+#include <librealsense2/rs.hpp>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                     These parameters are reconfigurable                                        //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#define STREAM          RS2_STREAM_INFRARED  // rs2_stream is a types of data provided by RealSense device        //
+#define FORMAT          RS2_FORMAT_Y8       // rs2_format identifies how binary data is encoded within a frame   //
+#define WIDTH           1280                 // Defines the number of columns for each frame                      //
+#define HEIGHT          800               // Defines the number of lines for each frame                           //
+#define FPS             0                // Defines the rate of frames per second                                //
+#define STREAM_INDEX_LEFT  1              // Defines the stream index, used for multiple streams of the same type //
+#define STREAM_INDEX_RIGHT 2              // Defines the stream index, used for multiple streams of the same type //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#if 1
 #define OFFLINE_MODE
+#endif
 
 class VisionManager
 {
@@ -20,12 +36,20 @@ private:
 	std::vector<std::string> serials;
 	cv::Size patternsize;
 
+	/* Realsesnse Camera variables */
+	rs2::context ctx;
+	rs2::device_list dev_list;
+	std::vector<rs2::pipeline> pipelines;
+
 #ifdef OFFLINE_MODE
 	std::vector<cv::Mat> left_images;
 	std::vector<cv::Mat> right_images;
 #endif
 
 	void get_stereo_pair_from_device(int dev_idx, cv::Mat& left_img, cv::Mat& right_img);
+	void init_devices();
+	void configure_video_stream();
+	void configure_IR_projector();
 
 public:
 	VisionManager();
