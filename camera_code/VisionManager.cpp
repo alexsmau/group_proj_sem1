@@ -5,6 +5,8 @@
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core/types_c.h>
 
+#include <librealsense2/rs.hpp>
+
 void VisionManager::init_devices()
 {
 	dev_list = ctx.query_devices();
@@ -141,4 +143,11 @@ bool VisionManager::get_patten_info_from_device(int dev_idx, cv::Mat& img_left, 
 	}
 
 	return true;
+}
+
+rs2_intrinsics VisionManager::get_intrinsics_from_device(int dev_idx)
+{
+	rs2::stream_profile stream = pipelines[dev_idx].get_active_profile().get_stream(STREAM);
+	rs2::video_stream_profile video_stream = stream.as<rs2::video_stream_profile>();
+	return video_stream.get_intrinsics();
 }

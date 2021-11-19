@@ -69,6 +69,7 @@ public:
 	 */
 	bool get_patten_info_from_device(int dev_idx, cv::Mat& img_left, std::vector<cv::Point2f>& corners_left, cv::Mat& img_right, std::vector<cv::Point2f>& corners_right, int map[16][2]);
 
+	rs2_intrinsics get_intrinsics_from_device(int dev_idx);
 };
 
 #endif

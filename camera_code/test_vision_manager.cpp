@@ -6,6 +6,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/calib3d.hpp>
 
+#include <librealsense2/rs.hpp>
+
 int main()
 {
 	VisionManager VisManager = VisionManager();
@@ -37,6 +39,23 @@ int main()
 	{
 		printf("corner %2d at col: %f row: %f \n", count++, point.x, point.y);
 	}
+	rs2_intrinsics intrinsics = VisManager.get_intrinsics_from_device(image_pair);
+	std::cout << "Camera intrinsics:\n";
+	std::cout << "center of projection x = " << intrinsics.ppx << "\n";
+	std::cout << "center of projection y = " << intrinsics.ppy << "\n";
+	std::cout << "focal length x = " << intrinsics.fx << "\n";
+	std::cout << "focal length y = " << intrinsics.fy << "\n";
+	std::cout << "image rows = " << intrinsics.width << "\n";
+	std::cout << "image columns = " << intrinsics.height << "\n";
+	std::cout << "distortion model type = " << intrinsics.model << "\n";
+	std::cout << "distortion model coefficients = " << intrinsics.coeffs << "\n";
+	// Get the depth frame's dimensions
+	//float Width = WIDTH;
+	//float height = HEIGHT;
+
+	// Query the distance from the camera to the object in the center of the image
+	//float dist_to_center = depth.get_distance(Width / 2, height / 2);
+	//std::cout << "Distance to depth image center = " << dist_to_center << "\n";
 
 	cv::Mat dst;
 	hconcat(left_img, right_img, dst);
