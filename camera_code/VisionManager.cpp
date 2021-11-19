@@ -93,8 +93,8 @@ void VisionManager::get_stereo_pair_from_device(int dev_idx, cv::Mat& left_img, 
 	rs2::video_frame left_frame = frames.get_infrared_frame(STREAM_INDEX_LEFT);
 	rs2::video_frame right_frame = frames.get_infrared_frame(STREAM_INDEX_RIGHT);
 
-	left_img = cv::Mat(cv::Size(WIDTH, HEIGHT), CV_8UC1, (void*)left_frame.get_data());
-	right_img = cv::Mat(cv::Size(WIDTH, HEIGHT), CV_8UC1, (void*)right_frame.get_data());
+	cv::Mat(cv::Size(WIDTH, HEIGHT), CV_8UC1, (void*)left_frame.get_data()).copyTo(left_img);
+	cv::Mat(cv::Size(WIDTH, HEIGHT), CV_8UC1, (void*)right_frame.get_data()).copyTo(right_img);
 #endif
 
 }
