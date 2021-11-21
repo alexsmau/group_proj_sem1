@@ -25,7 +25,7 @@
 #define STREAM_INDEX_RIGHT 2              // Defines the stream index, used for multiple streams of the same type //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if 1
+#if 0
 #define OFFLINE_MODE
 #endif
 
@@ -55,7 +55,9 @@ public:
 	VisionManager();
 
 	/* Return the serial ID of each device, the index of the serial is the index of the device. */
-	std::vector<std::string> get_devices_serials();
+	void get_devices_serials(std::vector<std::string> serials);
+	
+	int get_nr_of_devices();
 
 	/**
 	 * Get the pattern onformation from the stereo camera. 

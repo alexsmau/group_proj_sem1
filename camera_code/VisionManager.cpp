@@ -14,11 +14,18 @@ void VisionManager::init_devices()
 	serials.clear();
 	for (rs2::device dev : dev_list)
 	{
-		printf("Device serial nr is %s \n", dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+		//std::string dev_serial = dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
+		const char *dev_serial = dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
+		int len = strlen(dev_serial);
+		std::string serial_string = std::string(dev_serial, len + 1);
+		serial_string[len] = '\n';
+		printf("Device serial nr is %s\n", serial_string);
 		serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+		printf("String len is %d \n", strlen(dev_serial));
 	}
 
 	nr_of_devices = serials.size();
+	printf("Nr of devices: %d \n", nr_of_devices);
 }
 
 void VisionManager::configure_IR_projector()
@@ -79,6 +86,22 @@ VisionManager::VisionManager()
 	configure_IR_projector();
 	configure_video_stream();
 #endif
+}
+
+void VisionManager::get_devices_serials(std::vector<std::string> serial_vector)
+{
+	serial_vector.clear();
+	printf("There are %d strings\n", serials.size());
+	for (std::string s : serials)
+	{
+		printf("Add string %s\n", s);
+		serial_vector.push_back(s);
+	}
+}
+
+int VisionManager::get_nr_of_devices()
+{
+	return nr_of_devices;
 }
 
 void VisionManager::get_stereo_pair_from_device(int dev_idx, cv::Mat& left_img, cv::Mat& right_img)

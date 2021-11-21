@@ -8,7 +8,7 @@
 
 #include <librealsense2/rs.hpp>
 
-int main()
+int main12345()
 {
 	VisionManager VisManager = VisionManager();
 

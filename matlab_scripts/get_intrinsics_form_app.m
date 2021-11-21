@@ -1,0 +1,1 @@
+[status,cmdout] = system('S:\AAU\Year1\StereoCamVS\x64\Debug\matlab_get_intrinsics_cpp.exe');
