@@ -29,7 +29,7 @@ int main()
 		printf("#7 %d\n", intrinsics.width);
 		/* image columns */
 		printf("#8 %d\n", intrinsics.height);
-		/*image rows */
+		/* distoprtion_model */
 		printf("#9 %s\n", rs2_distortion_to_string(intrinsics.model));
 		/* image columns */
 		for (int i = 0; i < 5; i++)
