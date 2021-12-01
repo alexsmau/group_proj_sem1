@@ -26,8 +26,8 @@ int main()
 
 		cv::Mat dst;
 		hconcat(local_left_img, local_right_img, dst);
-		cv::imwrite("local_left_img1.png", local_left_img);
-		cv::imwrite("local_right_img1.png", local_right_img);
+		cv::imwrite("local_left_img5.png", local_left_img);
+		cv::imwrite("local_right_img5.png", local_right_img);
 		//cv::namedWindow("infrared_stereo_pair", cv::WINDOW_NORMAL);
 		//imshow("infrared_stereo_pair", dst);
 		if (found_pattern)
@@ -52,8 +52,8 @@ int main()
 
 		cv::Mat global_dst;
 		hconcat(global_left_img, global_right_img, global_dst);
-		cv::imwrite("global_left_img1.png", global_left_img);
-		cv::imwrite("global_right_img1.png", global_right_img);
+		cv::imwrite("global_left_img5.png", global_left_img);
+		cv::imwrite("global_right_img5.png", global_right_img);
 		//cv::namedWindow("infrared_stereo_pair", cv::WINDOW_NORMAL);
 		//imshow("infrared_stereo_pair", global_dst);
 		if (found_pattern)
@@ -63,8 +63,8 @@ int main()
 
 			cv::Mat global_dst_corner;
 			hconcat(global_left_img, global_right_img, global_dst_corner);
-			cv::namedWindow("local_infrared_stereo_pair_w_corners", cv::WINDOW_NORMAL);
-			imshow("local_infrared_stereo_pair_w_corners", global_dst_corner);
+			cv::namedWindow("global_infrared_stereo_pair_w_corners", cv::WINDOW_NORMAL);
+			imshow("global_infrared_stereo_pair_w_corners", global_dst_corner);
 		}
 
 		cv::waitKey(0);

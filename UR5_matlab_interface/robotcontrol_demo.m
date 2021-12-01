@@ -8,7 +8,7 @@
 % Set PC IP in Polyscope program
 % First run Matlab code; then run the Polyscope program
 clear all
-
+format compact
 % Connect to robot
 Robot_IP = '192.168.0.103';
 Socket_conn = tcpip(Robot_IP, 30006,'NetworkRole','server');
@@ -22,7 +22,8 @@ disp('Connected!');
 Joint_Positions = read_actual_joint_positions(Socket_conn)
 
 %% Set joint positions
- Joint_Positions(3) = Joint_Positions(3) - 0.17
+ Joint_Positions(5) = Joint_Positions(5) - 0.10
+ %Joint_Positions(6) = deg2rad(-180);
 set_joint_positions(Socket_conn, Joint_Positions)
 
 %% Read robot pose
