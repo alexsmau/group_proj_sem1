@@ -1,14 +1,11 @@
 #include "VisionManager.h"
-
 #include <vector>
 #include <iostream>
-
 #include <opencv2/highgui.hpp>
 #include <opencv2/calib3d.hpp>
-
 #include <librealsense2/rs.hpp>
 
-int main12345()
+int main2()
 {
 	VisionManager VisManager = VisionManager();
 
@@ -23,7 +20,7 @@ int main12345()
 	int image_pair = 0;
 
 	bool found_pattern = VisManager.get_patten_info_from_device(image_pair, left_img, corners_left, right_img, corners_right, map);
-	
+	std::cout << "error" << std::endl;
 	
 	printf("\nFound pattern in both: %s\n", found_pattern ? "true" : "false");
 	printf("Corners in the left image:\n");

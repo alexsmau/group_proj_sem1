@@ -5,7 +5,7 @@
 #include <librealsense2/rs.h>
 #include <librealsense2/h/rs_pipeline.h>
 #include <librealsense2/h/rs_frame.h>
-#include "example.h"
+#include "../example.h"
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -43,7 +43,7 @@ static std::string get_sensor_name(const rs2::sensor& sensor)
         return "Unknown Sensor";
 }
 
-int mainz()
+int main3()
 {
     rs2::context ctx;
     rs2::device_list dev_list = ctx.query_devices();
@@ -95,8 +95,8 @@ int mainz()
         imshow("infrared_stereo_pair", dst);
         
         waitKey(0);
-        imwrite("left_img3.png", dMat_left);
-        imwrite("right_img3.png", dMat_right);
+        imwrite("left_img_yaw9.197.png", dMat_left);
+        imwrite("right_img_yaw9.197.png", dMat_right);
     }
 
     return EXIT_SUCCESS;

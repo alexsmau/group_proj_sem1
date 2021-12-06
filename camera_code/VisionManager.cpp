@@ -14,13 +14,14 @@ void VisionManager::init_devices()
 	serials.clear();
 	for (rs2::device dev : dev_list)
 	{
+		serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
 		//std::string dev_serial = dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
 		const char *dev_serial = dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER);
 		int len = strlen(dev_serial);
 		std::string serial_string = std::string(dev_serial, len + 1);
 		serial_string[len] = '\n';
 		printf("Device serial nr is %s\n", serial_string);
-		serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
+		//serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
 		printf("String len is %d \n", strlen(dev_serial));
 	}
 
@@ -76,15 +77,27 @@ VisionManager::VisionManager()
 	left_images.push_back(left_img);
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img2.png", cv::IMREAD_GRAYSCALE));
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img3.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_straight.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_roll.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_pitch.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
 
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img1.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img2.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img3.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_straight.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_roll.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_pitch.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
 
 #else
+	std::cout << "error1" << std::endl;
 	init_devices();
+	std::cout << "error2" << std::endl;
 	configure_IR_projector();
+	std::cout << "error3" << std::endl;
 	configure_video_stream();
+	std::cout << "error4" << std::endl;
 #endif
 }
 
