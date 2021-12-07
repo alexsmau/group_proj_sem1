@@ -123,9 +123,9 @@ void VisionManager::get_stereo_pair_from_device(int dev_idx, cv::Mat& left_img, 
 	left_images[dev_idx].copyTo(left_img);
 	right_images[dev_idx].copyTo(right_img);
 #else
-	printf("\n\n!!!!!!!!!!!!!GET PAIR!!!!!!!!!!!!\n");
+	//printf("\n\n!!!!!!!!!!!!!GET PAIR!!!!!!!!!!!!\n");
 	rs2::frameset frames = pipelines[dev_idx].wait_for_frames();
-	printf("There are %d frames found\n", (int)frames.size());
+	//printf("There are %d frames found\n", (int)frames.size());
 	rs2::video_frame left_frame = frames.get_infrared_frame(STREAM_INDEX_LEFT);
 	rs2::video_frame right_frame = frames.get_infrared_frame(STREAM_INDEX_RIGHT);
 
