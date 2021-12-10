@@ -39,9 +39,9 @@ void depth_calc(float k1_x, float k2_x, int i) {
 
 	float focal_length = 2.0162;
 	int baseline = 50;
+	float px_per_mm = 634.846;
 
-	float x_disp = (k1_x - k2_x) * focal_length / 634.846;
-	
+	float x_disp = (k1_x - k2_x) * focal_length / px_per_mm;
 
 	float x_depth = (focal_length * baseline) / x_disp;
 	depth.push_back(x_depth);
@@ -135,7 +135,7 @@ void rotation_calc() {
 }
 
 
-int main() {
+int main5() {
 
 	VisionManager VisManager = VisionManager();
 

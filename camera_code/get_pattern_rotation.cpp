@@ -11,12 +11,13 @@
 #include <librealsense2/rs.hpp>
 
 #define GLOBAL_CAM_INDEX (0)
-#define LOCAL_CAM_INDEX (4)
+#define LOCAL_CAM_INDEX (0)
 
 std::vector <float> disparity;
 std::vector <float> depth;
 std::vector <float> azimuth;
 std::vector <float> inclination;
+
 
 void depth_calc(float k1_x, float k2_x, int i) {
 
@@ -39,10 +40,14 @@ float degToRad(float deg) {
 	float rad = deg * 3.141592 / 180;
 	return rad;
 }
+float radToDeg(float rad) {
+	float deg = rad / 3.141592 * 180;
+	return deg;
+}
 void angle_calc(int x1, int y1, int x2, int y2, int i) {
 
 	float x_angle = ((x1 - 640) * (91.2 / 1280) + (x1 - 640) * (91.2 / 1280)) / 2;
-	float y_angle = ((-1 * (y1 - 400) * (65.5 / 800)) + (-1 * (y1 - 400) * (65.5 / 800))) / 2;
+	float y_angle = (((y1 - 400) * (65.5 / 800)) + ((y1 - 400) * (65.5 / 800))) / 2;
 	azimuth.push_back(x_angle);
 	inclination.push_back(y_angle);
 
@@ -65,6 +70,19 @@ void get_3d_coordinated(std::vector<cv::Point3f> &points_3d)
 		points_3d.push_back(cv::Point3f(y, x, z));
 	}
 }
+
+void get_3d_coord_world_frame(std::vector<cv::Point3f>& points_3d)
+{
+	points_3d.clear();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			points_3d.push_back(cv::Point3f(j*16.5, i*16.5, 0));
+		}
+	}
+}
+
 
 int main()
 {
@@ -97,6 +115,8 @@ int main()
 		imshow("local_infrared_stereo_pair_w_corners", local_dst_corner);
 
 		std::vector<cv::Point3f> objectPoints;
+		std::vector<cv::Point3f> objectPoints2;
+
 		for (int i = 0; i < 16; i++)
 		{
 			float x_l = corners_left[map[i][0]].x;
@@ -107,7 +127,7 @@ int main()
 			angle_calc(corners_left[i].x, corners_left[i].y, corners_right[i].x, corners_right[i].y, i);
 		}
 		get_3d_coordinated(objectPoints);
-
+		get_3d_coord_world_frame(objectPoints2);
 		for (int i = 0; i < 16; i++)
 		{
 			std::cout << "x = " << objectPoints[i].x << " y = " << objectPoints[i].y << " z = " << objectPoints[i].z << "\n";
@@ -126,14 +146,29 @@ int main()
 		cam_mat[2][1] = 0;
 		cam_mat[2][2] = 1;
 
-		cv::Mat camera_matrix(3 ,3 , CV_32F, &cam_mat);
+		cv::Mat camera_matrix(3, 3, CV_32F, &cam_mat);
 
-		float coeff[5] = {0, 0, 0, 0, 0};
+		float coeff[5] = { 0, 0, 0, 0, 0 };
 		cv::Mat distortion_coeff(1, 5, CV_32F, &coeff);
 
-		cv::Mat rvec, tvec;
+		cv::Mat rvec, tvec, outjac;
+		std::vector<cv::Point2f> outimg;
 
-		cv::solvePnP(objectPoints, corners_left, camera_matrix, distortion_coeff, rvec, tvec);
+		//std::cout << "objectPoints2:\n";
+		//std::cout << objectPoints2;
+
+		cv::solvePnP(objectPoints2, corners_left, camera_matrix, distortion_coeff, rvec, tvec);
+		cv::projectPoints(objectPoints2, rvec, tvec, camera_matrix, distortion_coeff, outimg, outjac);
+
+		std::cout << "Pitch = " << radToDeg(rvec.at<double>(0)) << " roll = " << radToDeg(rvec.at<double>(1)) << " yaw = " << radToDeg(rvec.at<double>(2)) << std::endl;
+
+
+		std::cout << "\n" << "regular coordinates" << std::endl;
+		std::cout << corners_left << std::endl;
+
+		std::cout << "\n" << "Projected plane coordinates" << std::endl;
+		std::cout << outimg << std::endl;
+
 
 		std::cout << "rvec:\n";
 		std::cout << rvec;
