@@ -60,7 +60,7 @@ void VisionManager::configure_video_stream()
 
 VisionManager::VisionManager()
 {
-	patternsize = cv::Size(4, 4);
+	patternsize = cv::Size(5, 8);
 
 #ifdef OFFLINE_MODE
 	nr_of_devices = 1;
