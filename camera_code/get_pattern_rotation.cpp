@@ -1,17 +1,14 @@
 #include "VisionManager.h"
-
 #include <vector>
 #include <iostream>
-
 #include <opencv2/highgui.hpp>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-
 #include <librealsense2/rs.hpp>
 
 #define GLOBAL_CAM_INDEX (0)
-#define LOCAL_CAM_INDEX (0)
+#define LOCAL_CAM_INDEX (6)
 
 std::vector <float> disparity;
 std::vector <float> depth;

@@ -82,6 +82,10 @@ VisionManager::VisionManager()
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_pitch.png", cv::IMREAD_GRAYSCALE));
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
 
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\global_left_img5.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\local_left_img2.png", cv::IMREAD_GRAYSCALE));
+
+
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img1.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img2.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img3.png", cv::IMREAD_GRAYSCALE));
@@ -89,6 +93,9 @@ VisionManager::VisionManager()
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_roll.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_pitch.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
+
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\global_right_img5.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\local_right_img2.png", cv::IMREAD_GRAYSCALE));
 
 #else
 	std::cout << "error1" << std::endl;
