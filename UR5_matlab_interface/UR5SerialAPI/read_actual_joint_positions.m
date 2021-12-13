@@ -13,7 +13,6 @@ function P = read_actual_joint_positions(t)
     while t.BytesAvailable==0
     end
     rec = fscanf(t,'%c',t.BytesAvailable);
-    rec
     if ~strcmp(rec(1),'[') || ~strcmp(rec(end),']')
         error('robotpose read error')
     end
