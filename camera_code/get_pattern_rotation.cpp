@@ -10,6 +10,8 @@
 #define GLOBAL_CAM_INDEX (0)
 #define LOCAL_CAM_INDEX (1)
 
+#define CAMERA_IDX (GLOBAL_CAM_INDEX)
+
 std::vector <float> disparity;
 std::vector <float> depth;
 std::vector <float> azimuth;
@@ -92,7 +94,7 @@ int main()
 	cv::Mat left_img, right_img;
 	std::vector<cv::Point2f> corners_left, corners_right;
 	int map[40][2];
-	bool found_pattern = VisManager.get_patten_info_from_device(LOCAL_CAM_INDEX, left_img, corners_left, right_img, corners_right, map);
+	bool found_pattern = VisManager.get_patten_info_from_device(CAMERA_IDX, left_img, corners_left, right_img, corners_right, map);
 
 	printf("\nLocal found pattern in both: %s\n", found_pattern ? "true" : "false");
 
@@ -133,17 +135,37 @@ int main()
 		}
 
 		float cam_mat[3][3];
-		cam_mat[0][0] = 646.908;// fx
-		cam_mat[0][1] = 0;
-		cam_mat[0][2] = 641.877; // cx
+		if (CAMERA_IDX == LOCAL_CAM_INDEX)
+		{
+			std::cout << "\n Use local camera intrinsics \n";
+			cam_mat[0][0] = 646.908;// fx
+			cam_mat[0][1] = 0;
+			cam_mat[0][2] = 641.877; // cx
 
-		cam_mat[1][0] = 0;
-		cam_mat[1][1] = 646.908; //fy
-		cam_mat[1][2] = 405.522; //cy
+			cam_mat[1][0] = 0;
+			cam_mat[1][1] = 646.908; //fy
+			cam_mat[1][2] = 405.522; //cy
 
-		cam_mat[2][0] = 0;
-		cam_mat[2][1] = 0;
-		cam_mat[2][2] = 1;
+			cam_mat[2][0] = 0;
+			cam_mat[2][1] = 0;
+			cam_mat[2][2] = 1;
+		}
+		else
+		{
+			std::cout << "\n Use global camera intrinsics \n";
+			cam_mat[0][0] = 634.637;// fx
+			cam_mat[0][1] = 0;
+			cam_mat[0][2] = 636.179; // cx
+
+			cam_mat[1][0] = 0;
+			cam_mat[1][1] = 634.637; //fy
+			cam_mat[1][2] = 393.432; //cy
+
+			cam_mat[2][0] = 0;
+			cam_mat[2][1] = 0;
+			cam_mat[2][2] = 1;
+		}
+		
 
 		cv::Mat camera_matrix(3, 3, CV_32F, &cam_mat);
 

@@ -5,19 +5,19 @@
 #include <opencv2/calib3d.hpp>
 #include <librealsense2/rs.hpp>
 
-int main2()
+int main()
 {
 	VisionManager VisManager = VisionManager();
 
 	cv::Mat left_img, right_img;
 	std::vector<cv::Point2f> corners_left, corners_right;
-	int map[16][2];
+	int map[40][2];
 	
 	/* Chose a value between 0 , 1 and 2. This refers to the image pair the OFFLINE_MODE will use. Once
 	 * I fix everything, this will be 0 or 1 depending on which camera we want to use. Till then, you can 
 	 * use the OFFLINE_MODE which mimics taking a pair of images from the camera. 
 	 */
-	int image_pair = 0;
+	int image_pair = 1;
 
 	bool found_pattern = VisManager.get_patten_info_from_device(image_pair, left_img, corners_left, right_img, corners_right, map);
 	std::cout << "error" << std::endl;
@@ -45,7 +45,10 @@ int main2()
 	std::cout << "image rows = " << intrinsics.width << "\n";
 	std::cout << "image columns = " << intrinsics.height << "\n";
 	std::cout << "distortion model type = " << intrinsics.model << "\n";
-	std::cout << "distortion model coefficients = " << intrinsics.coeffs << "\n";
+	for (int i = 0; i < 5; i++)
+	{
+		std::cout << "distortion model coefficients[ " << i << "] = " << intrinsics.coeffs[i] << "\n";
+	}
 	// Get the depth frame's dimensions
 	//float Width = WIDTH;
 	//float height = HEIGHT;
@@ -59,8 +62,8 @@ int main2()
 	cv::namedWindow("infrared_stereo_pair", cv::WINDOW_NORMAL);
 	imshow("infrared_stereo_pair", dst);
 
-	cv::drawChessboardCorners(left_img, cv::Size(4,4), cv::Mat(corners_left), true);
-	cv::drawChessboardCorners(right_img, cv::Size(4, 4), cv::Mat(corners_right), true);
+	cv::drawChessboardCorners(left_img, cv::Size(5,8), cv::Mat(corners_left), true);
+	cv::drawChessboardCorners(right_img, cv::Size(5, 8), cv::Mat(corners_right), true);
 
 	cv::Mat dst_corner;
 	hconcat(left_img, right_img, dst_corner);
