@@ -81,10 +81,12 @@ VisionManager::VisionManager()
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_roll.png", cv::IMREAD_GRAYSCALE));
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_pitch.png", cv::IMREAD_GRAYSCALE));
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\left_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
-
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\global_left_img5.png", cv::IMREAD_GRAYSCALE));
 	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\local_left_img2.png", cv::IMREAD_GRAYSCALE));
 
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\local_left_img01.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\global_left_img01.png", cv::IMREAD_GRAYSCALE));
+	left_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\local_left_img02.png", cv::IMREAD_GRAYSCALE));
 
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img1.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img2.png", cv::IMREAD_GRAYSCALE));
@@ -93,9 +95,12 @@ VisionManager::VisionManager()
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_roll.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_pitch.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\sample_images\\right_img_yaw9.197.png", cv::IMREAD_GRAYSCALE));
-
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\global_right_img5.png", cv::IMREAD_GRAYSCALE));
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\local_global_pairs\\local_right_img2.png", cv::IMREAD_GRAYSCALE));
+
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\local_right_img01.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\global_right_img01.png", cv::IMREAD_GRAYSCALE));
+	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\local_right_img02.png", cv::IMREAD_GRAYSCALE));
 
 #else
 	std::cout << "error1" << std::endl;
@@ -179,7 +184,7 @@ bool VisionManager::get_patten_info_from_device(int dev_idx, cv::Mat& img_left, 
 
 	/* Currently the order is maintained between the two corner sets. I am not sure what happens if the image is very tilted.
 	 * I will have to experiment a bit more with this. */
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 40; i++)
 	{
 		map[i][0] = i;
 		map[i][1] = i;

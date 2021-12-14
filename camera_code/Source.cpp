@@ -16,7 +16,7 @@ using namespace std;
 //cout<< dist_to_center << " meters away \n";
 //int ignorethis2 = printf("The camera is facing an object %f meters away \n", dist_to_center);
 
-int main() {
+int main69() {
     int ignorethis = printf("Begin program\n");
     // Create a Pipeline - this serves as a top-level API for streaming and processing frames
     rs2::pipeline p;
