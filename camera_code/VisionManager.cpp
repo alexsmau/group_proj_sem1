@@ -20,7 +20,7 @@ void VisionManager::init_devices()
 		int len = strlen(dev_serial);
 		std::string serial_string = std::string(dev_serial, len + 1);
 		serial_string[len] = '\n';
-		printf("Device serial nr is %s\n", serial_string);
+		printf("Device serial nr is %s\n", serial_string.c_str());
 		//serials.push_back(dev.get_info(RS2_CAMERA_INFO_SERIAL_NUMBER));
 		printf("String len is %d \n", strlen(dev_serial));
 	}
@@ -103,13 +103,12 @@ VisionManager::VisionManager()
 	right_images.push_back(cv::imread("..\\..\\group_proj_sem1\\camera_code\\image_pairs2\\local_right_img02.png", cv::IMREAD_GRAYSCALE));
 
 #else
-	std::cout << "error1" << std::endl;
 	init_devices();
-	std::cout << "error2" << std::endl;
+	
 	configure_IR_projector();
-	std::cout << "error3" << std::endl;
+	
 	configure_video_stream();
-	std::cout << "error4" << std::endl;
+	
 #endif
 }
 
