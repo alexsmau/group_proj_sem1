@@ -69,37 +69,33 @@ int main()
 	 * STEP 1: Initialize translation matrices for left/right cameras  *
 	 *******************************************************************/
 
-	double base_leftGlobalCam_double[4][4] = { { 1, 0, 0, 2.2 },
-											   {0, 1, 0, -12.5},
-											   {0, 0, 1, 196.1},
-											   {0, 0, 0, 1} };
-	cv::Mat base_leftGlobalCam_mat(4, 4, CV_64F, &base_leftGlobalCam_double);
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> base_leftGlobalCam;
-	cv::cv2eigen(base_leftGlobalCam_mat, base_leftGlobalCam);
+	Eigen::Matrix4d base_leftGlobalCam;
+	base_leftGlobalCam <<
+		1, 0, 0, 2.2,
+		0, 1, 0, -12.5,
+		0, 0, 1, 196.1,
+		0, 0, 0, 1;
 
-	double leftLocalCam_endeff_double[4][4] = {{ 1, 0, 0, 18 },
-										       { 0, 1, 0, 25 },
-								       		   { 0, 0, 1, -43.8 },
-										       { 0, 0, 0, 1 } };
-	cv::Mat leftLocalCam_endeff_mat(4, 4, CV_64F, &leftLocalCam_endeff_double);
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> leftLocalCam_endeff;
-	cv::cv2eigen(leftLocalCam_endeff_mat, leftLocalCam_endeff);
+	Eigen::Matrix4d leftLocalCam_endeff;
+	leftLocalCam_endeff <<
+		1, 0, 0, 18,
+		0, 1, 0, 25,
+		0, 0, 1, -43.8,
+		0, 0, 0, 1;
 
-	double base_rightGlobalCam_double[4][4] = { {1, 0, 0, 52.2},
-	                                     {0, 1, 0, -12.5},
-	                                     {0, 0, 1, 196.1},
-	                                     {0, 0, 0, 1} };
-	cv::Mat base_rightGlobalCam_mat(4, 4, CV_64F, &base_rightGlobalCam_double);
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> base_rightGlobalCam;
-	cv::cv2eigen(base_rightGlobalCam_mat, base_rightGlobalCam);
+	Eigen::Matrix4d base_rightGlobalCam;
+	base_rightGlobalCam <<
+		1, 0, 0, 52.2,
+		0, 1, 0, -12.5,
+		0, 0, 1, 196.1,
+		0, 0, 0, 1;
 
-	double rightLocalCam_endeff_double[4][4] = { {1, 0, 0, -32},
-	                                             {0, 1, 0, 25},
-	                                             {0, 0, 1, -43.8},
-	                                             {0, 0, 0, 1} };
-	cv::Mat rightLocalCam_endeff_mat(4, 4, CV_64F, &rightLocalCam_endeff_double);
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> rightLocalCam_endeff;
-	cv::cv2eigen(rightLocalCam_endeff_mat, rightLocalCam_endeff);
+	Eigen::Matrix4d rightLocalCam_endeff;
+	rightLocalCam_endeff <<
+		1, 0, 0, -32,
+		0, 1, 0, 25,
+		0, 0, 1, -43.8,
+		0, 0, 0, 1;
 
 #if 1
 	double rotate_to_ur_double[3][1] = { {-1.5708}, {-1.5708}, {0} }; // 90 0 90
@@ -117,7 +113,7 @@ int main()
 	hconcat(rmat_to_ur, left_zero, hconc_first);
 	vconcat(hconc_first, bott_zero, vconc_first);
 
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> rotation_matrix_1;
+	Eigen::Matrix4d rotation_matrix_1;
 	cv::cv2eigen(vconc_first, rotation_matrix_1);
 	std::cout << "\n rmat_to_ur_eig: \n" << rotation_matrix_1 << "\n";
 
@@ -132,7 +128,7 @@ int main()
 	hconcat(rottation2_mat, left_zero, hconc_second);
 	vconcat(hconc_second, bott_zero, vconc_second);
 
-	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> rotation_matrix_2;
+	Eigen::Matrix4d rotation_matrix_2;
 	cv::cv2eigen(vconc_second, rotation_matrix_2);
 	std::cout << "\n rmat_to_ur_eig: \n" << rotation_matrix_2 << "\n";
 #endif
@@ -262,11 +258,28 @@ int main()
 		 * STEP 3: Calculate Local camera position                      *
 		 ****************************************************************/
 		Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Base_endeff_left, Base_endeff_right;
+		
+
+
+		rotation_matrix_1 << 0.0007963, 0.0000000, -0.9999997, 0,
+			0.9999993, 0.0007963, 0.0007963, 0,
+			0.0007963, -0.9999997, 0.0000006, 0,
+			0, 0, 0, 1;
+
+		rotation_matrix_2 <<
+			0.7292987, -0.6841955, 0.0000000, 0,
+			0.6841955, 0.7292987, 0.0000000, 0,
+			0.0000000, 0.0000000, 1.0000000, 0,
+			0, 0, 0, 1;
+		
+
+		std::cout << "Rotation matrix test" << rotation_matrix_1 << std::endl;
+		std::cout << "Rotation matrix test" << rotation_matrix_2 << std::endl;
 
 		/* Matlab code 
 		 * Base_endeff_left = base_leftGlobalCam * leftGlobalCam_pattern * ((leftLocalCam_pattern)^(-1)) * leftLocalCam_endeff */
-		//Base_endeff_left = rotation_matrix_1 * base_leftGlobalCam * tmat_global_left * (tmat_local_left.inverse()) * leftLocalCam_endeff * rotation_matrix_2;
-		Base_endeff_left = base_leftGlobalCam * tmat_global_left * (tmat_local_left.inverse()) * leftLocalCam_endeff;
+		Base_endeff_left = rotation_matrix_1 * base_leftGlobalCam * tmat_global_left * (tmat_local_left.inverse()) * leftLocalCam_endeff * rotation_matrix_2;
+		//Base_endeff_left = base_leftGlobalCam * tmat_global_left * (tmat_local_left.inverse()) * leftLocalCam_endeff;
 		position_from_left[i][0] = Base_endeff_left(0, 3);
 		position_from_left[i][1] = Base_endeff_left(1, 3);
 		position_from_left[i][2] = Base_endeff_left(2, 3);

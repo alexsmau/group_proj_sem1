@@ -24,7 +24,7 @@ Joint_Positions = read_actual_joint_positions(Socket_conn)
 %% Set joint positions
  %Joint_Positions(5) = Joint_Positions(5) - 0.10
  %Joint_Positions(2) = deg2rad(-60);
- Joint_Positions = [-3.1431   -1.0472   -1.2655   -4.6635   -1.8693   -2.9417];
+ Joint_Positions = [-3.1431   -1.0472   -1.9657   -3.6635   -1.5692   -3.1415];
  
  %Joint_Positions(2) = Joint_Positions(2) + deg2rad(15);
 set_joint_positions(Socket_conn, Joint_Positions)
