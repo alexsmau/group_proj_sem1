@@ -10,7 +10,7 @@
 #define GLOBAL_CAM_INDEX (0)
 #define LOCAL_CAM_INDEX (1)
 
-#define CAMERA_IDX (LOCAL_CAM_INDEX)
+#define CAMERA_IDX (GLOBAL_CAM_INDEX)
 
 std::vector <float> disparity;
 std::vector <float> depth;

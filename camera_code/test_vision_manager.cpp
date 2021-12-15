@@ -5,7 +5,7 @@
 #include <opencv2/calib3d.hpp>
 #include <librealsense2/rs.hpp>
 
-int main80()
+int main()
 {
 	VisionManager VisManager = VisionManager();
 

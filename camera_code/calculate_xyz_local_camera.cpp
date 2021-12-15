@@ -75,7 +75,6 @@ int main()
 	cv::Mat base_leftGlobalCam_mat(4, 4, CV_64F, &base_leftGlobalCam_double);
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> base_leftGlobalCam;
 	cv::cv2eigen(base_leftGlobalCam_mat, base_leftGlobalCam);
-	//std::cout << "base_leftGlobalCam:\n" << base_leftGlobalCam << "\n";
 
 	double leftLocalCam_endeff_double[4][4] = {{ 1, 0, 0, 18 },
 										       { 0, 1, 0, 25 },
@@ -84,7 +83,6 @@ int main()
 	cv::Mat leftLocalCam_endeff_mat(4, 4, CV_64F, &leftLocalCam_endeff_double);
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> leftLocalCam_endeff;
 	cv::cv2eigen(leftLocalCam_endeff_mat, leftLocalCam_endeff);
-	//std::cout << "leftLocalCam_endeff:\n" << leftLocalCam_endeff << "\n";
 
 	double base_rightGlobalCam_double[4][4] = { {1, 0, 0, 52.2},
 	                                     {0, 1, 0, -12.5},
@@ -93,7 +91,6 @@ int main()
 	cv::Mat base_rightGlobalCam_mat(4, 4, CV_64F, &base_rightGlobalCam_double);
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> base_rightGlobalCam;
 	cv::cv2eigen(base_rightGlobalCam_mat, base_rightGlobalCam);
-	//std::cout << "base_rightGlobalCam:\n" << base_rightGlobalCam << "\n";
 
 	double rightLocalCam_endeff_double[4][4] = { {1, 0, 0, -32},
 	                                             {0, 1, 0, 25},
@@ -102,7 +99,6 @@ int main()
 	cv::Mat rightLocalCam_endeff_mat(4, 4, CV_64F, &rightLocalCam_endeff_double);
 	Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> rightLocalCam_endeff;
 	cv::cv2eigen(rightLocalCam_endeff_mat, rightLocalCam_endeff);
-	//std::cout << "rightLocalCam_endeff:\n" << rightLocalCam_endeff << "\n";
 
 	/****************************************************************
      * STEP 2: Get information from Cameras                         *
@@ -139,7 +135,7 @@ int main()
 		found_pattern = false;
 		while (!found_pattern)
 		{
-			found_pattern = VisManager.get_patten_info_from_device(camera_index + 10, left_img, corners_left, right_img, corners_right, map);
+			found_pattern = VisManager.get_patten_info_from_device(camera_index, left_img, corners_left, right_img, corners_right, map);
 
 			if (!found_pattern)
 			{
@@ -173,7 +169,7 @@ int main()
 				vconcat(conc2, bott, tmat2);
 
 				cv::cv2eigen(tmat1, tmat_global_left);
-				cv::cv2eigen(tmat1, tmat_global_right);
+				cv::cv2eigen(tmat2, tmat_global_right);
 			}
 		}
 		
@@ -185,7 +181,7 @@ int main()
 		found_pattern = false;
 		while (!found_pattern)
 		{
-			found_pattern = VisManager.get_patten_info_from_device(camera_index+ 10, left_img, corners_left, right_img, corners_right, map);
+			found_pattern = VisManager.get_patten_info_from_device(camera_index, left_img, corners_left, right_img, corners_right, map);
 
 			if (!found_pattern)
 			{
@@ -219,10 +215,7 @@ int main()
 				vconcat(conc2, bott, tmat2);
 
 				cv::cv2eigen(tmat1, tmat_local_left);
-				cv::cv2eigen(tmat1, tmat_local_right);
-
-				//std::cout << "tmat1:\n" << tmat1 << "\n";
-				//std::cout << "tmat_local_left:\n" << tmat_local_left << "\n";
+				cv::cv2eigen(tmat2, tmat_local_right);
 			}
 		}
 
@@ -244,11 +237,6 @@ int main()
 		position_from_right[i][0] = Base_endeff_right(0, 3);
 		position_from_right[i][1] = Base_endeff_right(1, 3);
 		position_from_right[i][2] = Base_endeff_right(2, 3);
-
-		//std::cout << "Base_endeff_left: \n" << Base_endeff_left;
-		//std::cout << "\n" << Base_endeff_left(0, 3) << " " << Base_endeff_left(1, 3) << " " << Base_endeff_left(2, 3) << "\n";
-		//std::cout << "Base_endeff_right: \n" << Base_endeff_right;
-		//std::cout << "\n" << Base_endeff_right(0, 3) << " " << Base_endeff_right(1, 3) << " " << Base_endeff_right(2, 3) << "\n";
 	}
 	/****************************************************************
      * STEP 4: Calculate average position                           *
@@ -257,15 +245,25 @@ int main()
 	double average_right_X = 0, average_right_Y = 0, average_right_Z = 0;
 	for (int i = 0; i < NR_OF_ITERATIONS; i++)
 	{
-		average_left_X += position_from_left[i][0];
-		average_right_X += position_from_right[i][0];
+		average_left_X += position_from_left[i][2];
+		average_right_X += position_from_right[i][2];
 
-		average_left_Y += position_from_left[i][1];
-		average_right_Y += position_from_right[i][1];
+		average_left_Y += position_from_left[i][0];
+		average_right_Y += position_from_right[i][0];
 
-		average_left_Z += position_from_left[i][2];
-		average_right_Z += position_from_right[i][2];
+		average_left_Z += position_from_left[i][1];
+		average_right_Z += position_from_right[i][1];
 	}
+	/*
+	for (int i = 0; i < NR_OF_ITERATIONS; i++)
+	{
+		std::cout << "pos left: " << position_from_left[i][0] << " " << position_from_left[i][1] << " " << position_from_left[i][2] << "\n";
+	}
+	for (int i = 0; i < NR_OF_ITERATIONS; i++)
+	{
+		std::cout << "pos right: " << position_from_right[i][0] << " " << position_from_right[i][1] << " " << position_from_right[i][2] << "\n";
+	}
+	*/
 	average_left_X = average_left_X / NR_OF_ITERATIONS;
 	average_left_Y = average_left_Y / NR_OF_ITERATIONS;
 	average_left_Z = average_left_Z / NR_OF_ITERATIONS;

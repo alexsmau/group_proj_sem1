@@ -25,7 +25,7 @@
 #define STREAM_INDEX_RIGHT 2              // Defines the stream index, used for multiple streams of the same type //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if 1
+#if 0
 #define OFFLINE_MODE
 #endif
 
