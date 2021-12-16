@@ -4,7 +4,7 @@ clear all, close all, clc
 xdata = load('correct_angles.txt'); % Load the data, we can either store the joint 
                            % angles in a file or pass it directly
 ydata = load('inverse_kin_angles.txt');
-col = 5 ; % So we know which "joint" we are working on
+col = 6 ; % So we know which "joint" we are working on
 
 x = xdata(:, col); % xdata contains all the tests results, thus why we only 
                  % use one column at a time
@@ -49,8 +49,7 @@ R
 plot(xn, yn, 'LineWidth', 3, 'Color', 'k');
 hold on
 xlabel('correct(radians)');
-ylabel('measured(radians)');
-title('Joint 5')
+ylabel('(radians)');
 plot(x, x, 'LineWidth', 1, 'Color', 'r'); % No errors
 hold on
 plot(x, y, 'x', 'Color', 'g');

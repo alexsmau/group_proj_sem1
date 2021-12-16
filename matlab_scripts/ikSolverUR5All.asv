@@ -159,11 +159,10 @@ end
 
 
 
-solutions = generatePossibleSolutions(theta1_,theta2_,theta3_,theta4_,theta5_,theta6_);
-
+solutions = generatePossibleSolutions(theta1_,theta2_,theta3_,theta4_,theta5_,theta6_)
 %solution = closetSolution(solutions, qPrevious);
 
-q = solutions(8,:);
+q = solutions;
 end
 
 function theta6 = calculateTheta6(X60, Y60, theta1, theta5)
@@ -248,22 +247,22 @@ solutions = [theta1(1) theta2(1) theta3(1) theta4(1) theta5(1) theta6(1);
              theta1(1) theta2(4) theta3(4) theta4(4) theta5(2) theta6(2);
              theta1(2) theta2(6) theta3(6) theta4(6) theta5(3) theta6(3);
              theta1(2) theta2(8) theta3(8) theta4(8) theta5(4) theta6(4)];
-
+         
 for i = 1:8
    for j = 1:6
       if (solutions(i,j) > 0.001)
-          solutions(i,j) = -2*pi + solutions(i,j);
+          solutions(i,j) = solutions(i,j) + pi;
       end
    end
 end
 
-for i = 1:8
-    solutions(i,6) = solutions(i,6) - pi/4;
-end
+    for i = 1:8
+        solutions(i,6) = solutions(i,6) - pi/4;
+    end
 end
 
 function solution = closetSolution(solutions, q)
-weights = [1 1 1 1 1 1];
+weights = [6 5 4 3 2 1];
 bestConfigurationDistance = inf;
 solution = solutions(1,:);
 for i = 1:size(solutions,1)
@@ -274,3 +273,4 @@ for i = 1:size(solutions,1)
     end
 end
 end
+

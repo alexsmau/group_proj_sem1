@@ -39,6 +39,9 @@ poses = [-3.1431   -1.0472   -2.4657   -3.0634   -1.7690   -2.8415;
  %Joint_Positions(2) = deg2rad(-60);
  %Joint_Positions = [-3.1431   -1.0472   -2.4657   -3.0634   -1.7690   -2.8415];
  Joint_Positions = poses(10, :);
+
+ %Joint_Positions = [-3.1431   -1.0472   -1.9657   -3.6635   -1.5692   -3.1415];
+ %Joint_Positions = poses(10, :);
  %Joint_Positions(2) = Joint_Positions(2) + deg2rad(15);
 set_joint_positions(Socket_conn, Joint_Positions)
 
@@ -46,27 +49,3 @@ set_joint_positions(Socket_conn, Joint_Positions)
 Robot_Pose = readrobotpose(Socket_conn)
 Translation = Robot_Pose(1:3); % in mm
 Orientation = Robot_Pose(4:6);
-
-%% %%%%%%%%%%% Example 1: translation
-% Translate robot
-%Translation = Translation - 20; % 20 mm in all axes
-moverobot(Socket_conn,Translation,Orientation);
-
-%% %%%%%%%%%%%% Example 2: Rotation
-% Converting axis-angle to rotation matrix
-orientation_mat = vrrotvec2mat([Orientation,norm(Orientation)]);
-% 20 degrees rotation about endeffector z axis
-z_axis = [1,0,0];
-Rot_mag = 20*pi/180;
-Rot_z = vrrotvec2mat([z_axis,Rot_mag]);
-Goal_orient = orientation_mat *Rot_z;
-% Convert back to axis-angel (Rotation Vector representation)
-Goal_v = vrrotmat2vec(Goal_orient(1:3,1:3));
-Goal_ori = Goal_v(4)*Goal_v(1:3);
-% Rotate:
-moverobot(Socket_conn,Translation,Goal_ori);
-
-%% Coop mode
-ActivateCoopMode(Socket_conn);
-pause(2);
-DeActivateCoopMode(Socket_conn);

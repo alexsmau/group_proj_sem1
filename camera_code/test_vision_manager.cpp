@@ -17,7 +17,7 @@ int main()
 	 * I fix everything, this will be 0 or 1 depending on which camera we want to use. Till then, you can 
 	 * use the OFFLINE_MODE which mimics taking a pair of images from the camera. 
 	 */
-	int image_pair = 1;
+	int image_pair = 0;
 
 	bool found_pattern = VisManager.get_patten_info_from_device(image_pair, left_img, corners_left, right_img, corners_right, map);
 	std::cout << "error" << std::endl;
@@ -69,6 +69,7 @@ int main()
 	hconcat(left_img, right_img, dst_corner);
 	cv::namedWindow("infrared_stereo_pair_w_corners", cv::WINDOW_NORMAL);
 	imshow("infrared_stereo_pair_w_corners", dst_corner);
+	cv::imwrite("alberto_points.png", dst_corner);
 	cv::waitKey(0);
 
 
