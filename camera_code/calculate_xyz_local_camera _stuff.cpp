@@ -15,7 +15,7 @@
 
 #define GLOBAL_CAM_INDEX (0)
 #define LOCAL_CAM_INDEX (1)
-#define NR_OF_ITERATIONS (1)
+#define NR_OF_ITERATIONS (10)
 
 void make_camera_matrix(bool is_local_cam, float cam_mat[3][3])
 {
@@ -273,8 +273,8 @@ int main()
 			0, 0, 0, 1;
 		
 
-		std::cout << "Rotation matrix test" << rotation_matrix_1 << std::endl;
-		std::cout << "Rotation matrix test" << rotation_matrix_2 << std::endl;
+		//std::cout << "Rotation matrix test" << rotation_matrix_1 << std::endl;
+		//std::cout << "Rotation matrix test" << rotation_matrix_2 << std::endl;
 
 		/* Matlab code 
 		 * Base_endeff_left = base_leftGlobalCam * leftGlobalCam_pattern * ((leftLocalCam_pattern)^(-1)) * leftLocalCam_endeff */
@@ -332,14 +332,14 @@ int main()
 	double avg_rotation_right[3] = {0 ,0, 0};
 	for (int i = 0; i < NR_OF_ITERATIONS; i++)
 	{
-		average_left_X += position_from_left[i][2];
-		average_right_X += position_from_right[i][2];
+		average_left_X += position_from_left[i][0];
+		average_right_X += position_from_right[i][0];
 
-		average_left_Y += position_from_left[i][0];
-		average_right_Y += position_from_right[i][0];
+		average_left_Y += position_from_left[i][1];
+		average_right_Y += position_from_right[i][1];
 
-		average_left_Z += position_from_left[i][1];
-		average_right_Z += position_from_right[i][1];
+		average_left_Z += position_from_left[i][2];
+		average_right_Z += position_from_right[i][2];
 
 		avg_rotation_left[0] += rotation_left[i][0];
 		avg_rotation_left[1] += rotation_left[i][1];
@@ -384,12 +384,15 @@ int main()
 	average_X = (average_left_X + average_right_X) / 2;
 	average_Y = (average_left_Y + average_right_Y) / 2;
 	average_Z = (average_left_Z + average_right_Z) / 2;
-	std::cout << "\nAverage X, Y, Z: \n" << average_X << " " << average_Y << " " << average_Z << "\n";
 
 	double avg_rot[3];
 	avg_rot[0] = (avg_rotation_left[0] + avg_rotation_right[0]) / 2;
 	avg_rot[1] = (avg_rotation_left[1] + avg_rotation_right[1]) / 2;
 	avg_rot[2] = (avg_rotation_left[2] + avg_rotation_right[2]) / 2;
-	std::cout << "Average rot: \n" << avg_rot[0] << " " << avg_rot[1] << " " << avg_rot[2] << "\n";
+
+	std::cout << "\nAverage X, Y, Z Rx Ry Rz: \n" << average_X << " " << average_Y << " " << average_Z << " " << avg_rot[0] << " " << avg_rot[1] << " " << avg_rot[2] << "\n";
+
+
+	//std::cout << "Average rot: \n" << avg_rot[0] << " " << avg_rot[1] << " " << avg_rot[2] << "\n";
 	return 1;
 }
